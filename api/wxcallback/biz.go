@@ -1,6 +1,7 @@
 package wxcallback
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -15,10 +16,12 @@ import (
 )
 
 type wxCallbackBizRecord struct {
-	CreateTime int64  `json:"CreateTime"`
-	ToUserName string `json:"ToUserName"`
-	MsgType    string `json:"MsgType"`
-	Event      string `json:"Event"`
+	CreateTime   int64  `json:"CreateTime"`
+	ToUserName   string `json:"ToUserName"`
+	FromUserName string `json:"FromUserName"`
+	Content      string `json:"Content"`
+	MsgType      string `json:"MsgType"`
+	Event        string `json:"Event"`
 }
 
 func bizHandler(c *gin.Context) {
@@ -55,5 +58,10 @@ func bizHandler(c *gin.Context) {
 	}
 	if !proxyOpen {
 		c.String(http.StatusOK, "success")
+	}
+	//文本消息回复测试
+	if json.MsgType == "Text" {
+		ct := time.Unix(1, 0)
+		c.String(http.StatusOK, fmt.Sprintf("<xml>\n  <ToUserName><![CDATA[%s]]></ToUserName>\n  <FromUserName><![CDATA[%s]]></FromUserName>\n  <CreateTime>%d</CreateTime>\n  <MsgType><![CDATA[text]]></MsgType>\n  <Content><![CDATA[%s]]></Content>\n</xml>", json.FromUserName, json.ToUserName, ct, json.Content))
 	}
 }

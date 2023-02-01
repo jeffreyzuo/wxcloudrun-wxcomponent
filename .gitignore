@@ -27,3 +27,6 @@ client/yarn.lock
 client/package-lock.json
 client/.vscode
 client/dist
+docker-compose.yml
+Dockerfile.development
+.cloudbase/container/debug.json
