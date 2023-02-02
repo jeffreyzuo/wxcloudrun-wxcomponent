@@ -60,10 +60,10 @@ func bizHandler(c *gin.Context) {
 		c.String(http.StatusOK, fmt.Sprint(c.Writer))
 	}
 	//文本消息回复测试
-	log.Info("Proxy over.")
 	if json.MsgType == "text" {
-		log.Info("Text message response")
 		ct := time.Unix(1, 0)
-		c.String(http.StatusOK, fmt.Sprintf("<xml>\n  <ToUserName><![CDATA[%s]]></ToUserName>\n  <FromUserName><![CDATA[%s]]></FromUserName>\n  <CreateTime>%d</CreateTime>\n  <MsgType><![CDATA[text]]></MsgType>\n  <Content><![CDATA[%s]]></Content>\n</xml>", json.FromUserName, json.ToUserName, ct, json.Content))
+		xmlResponse := fmt.Sprintf("<xml>\n  <ToUserName><![CDATA[%s]]></ToUserName>\n  <FromUserName><![CDATA[%s]]></FromUserName>\n  <CreateTime>%d</CreateTime>\n  <MsgType><![CDATA[text]]></MsgType>\n  <Content><![CDATA[%s]]></Content>\n</xml>", json.FromUserName, json.ToUserName, ct, json.Content)
+		log.Infof(xmlResponse)
+		c.String(http.StatusOK, xmlResponse)
 	}
 }
